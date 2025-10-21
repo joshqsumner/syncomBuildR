@@ -40,7 +40,7 @@ dispFilter <- function(net, weights = NULL, alpha = 0.05, cores = getOption("mc.
   # calculated values
   weights <- .check_weights(net, weights)
   net_met <- .check_node_metric(net, node_metric)
-  net$edges$disp_filt_weight <- weights
+  net$edges$disp_filt_weight <- as.numeric(weights)
   # grab edge data for convenience
   edges <- net$edges
   edges$p_value <- NA
@@ -54,7 +54,7 @@ dispFilter <- function(net, weights = NULL, alpha = 0.05, cores = getOption("mc.
     if (!use_node[i]) {
       return(edges_sub)
     }
-    w <- sum(edges_sub$disp_filt_weight) # total weight coming into this node
+    w <- sum(as.numeric(edges_sub$disp_filt_weight)) # total weight coming into this node
     k <- net_met[i] # degree for this node
     edges_sub <- do.call(
       rbind,
@@ -102,7 +102,7 @@ dispFilter <- function(net, weights = NULL, alpha = 0.05, cores = getOption("mc.
   if (is.null(weights)) {
     weights <- igraph::E(net_data$graph)$weight
   } else if (length(weights) == 1 && is.character(weights)) {
-    weights <- net_data$edges[[weights]]
+    weights <- as.numeric(net_data$edges[[weights]])
   } else if (!is.numeric(weights)) {
     stop("weights must be a numeric vector, NULL, or a single column name from the edges data")
   }
