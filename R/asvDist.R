@@ -105,7 +105,8 @@ asvDist <- function(asvTab, asvCols = NULL, method = "spearman",
     M[[paste0(method, "_distance")]] <- sqrt(2 * (1 - M[["r"]])) # turn correlation into a distance
     M[[paste0(method, "_similarity")]] <- 1 / sqrt(2 * (1 - M[["r"]])) # turn distance into similarity
     method <- paste0(method, "_similarity")
-    ldf <- do.call(rbind, parallel::mclapply(seq_len(length(M)), function(m) {
+    ldf <- do.call(rbind, parallel::mclapply(which(unlist(lapply(M, methods::is, "matrix"))),
+                                             function(m) {
       x <- as.data.frame(M[[m]])
       x$rowname <- rownames(x)
       x$trait <- names(M)[[m]]

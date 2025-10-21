@@ -127,6 +127,10 @@ demultiplex <- function(fwd_reads, rev_reads, barcodes, fwd = "FWD", rev = "REV"
       if (substr(write, nchar(write), nchar(write)) != "/") {
         write <- paste0(write, "/")
       }
+      if (!file.exists(write)){
+        print(paste0("Making ", write, " directory"))
+        dir.create(write)
+      }
       writeOut <- TRUE
     } else {
       write <- NULL

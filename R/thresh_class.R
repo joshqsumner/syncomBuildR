@@ -61,8 +61,13 @@ summary.thresh <- function(object, ...) {
   #* `Main Points`
   has_adj <- is.null(object$control$p.adjust.method) || object$control$p.adjust.method == "none"
   n_significant <- sum(
-    object$pval < 0.05 | object$post_prob > 0.95
+    object$pval < 0.05
   )
+  if (n_significant == 0) {
+    n_significant <- sum(
+      object$post.prob > 0.95
+    )
+  }
   cat(
     paste0(
       "Thresh fit with ", object$type, " to ", object$unit, "s\n",
